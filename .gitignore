@@ -1,0 +1,20 @@
+# Terraform
+.terraform/
+*.tfplan
+*.tfstate
+*.tfstate.backup
+!.gitkeep
+
+# macOS
+*.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+.*.swp
+
+# Windows
+Desktop.ini
+Thumbs.db
