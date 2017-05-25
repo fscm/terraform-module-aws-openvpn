@@ -20,6 +20,7 @@ resource "aws_instance" "openvpn" {
   associate_public_ip_address = "${var.associate_public_ip_address}"
   instance_type               = "${var.instance_type}"
   key_name                    = "${var.keyname}"
+  source_dest_check           = false
   subnet_id                   = "${element(var.subnet_ids, count.index - 1)}"
   user_data                   = "${element(data.template_file.openvpn.*.rendered, count.index)}"
   vpc_security_group_ids      = ["${aws_security_group.openvpn.id}","${aws_security_group.openvpn_public.id}","${var.extra_security_group_id}"]
