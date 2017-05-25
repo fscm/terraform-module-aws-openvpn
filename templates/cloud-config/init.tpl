@@ -1,3 +1,4 @@
+#cloud-config
 #
 # Cloud-Config template for the OpenVPN instance.
 #
