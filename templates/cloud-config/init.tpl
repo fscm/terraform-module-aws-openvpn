@@ -19,6 +19,7 @@ write_files:
       echo "  instance: ${hostname}.${domain}"
       sudo /usr/local/bin/ovpn_initpki -c ${hostname}.${domain}
       sudo /usr/local/bin/ovpn_config -u udp://${hostname}.${domain}:1194 ${openvpn_args} -E -S
+      sudo chown nobody:nobody /etc/openvpn/crl.pem
       echo "=== All Done ==="
     path: /tmp/setup_openvpn.sh
     permissions: '0755'

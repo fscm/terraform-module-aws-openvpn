@@ -43,6 +43,12 @@ variable "keyname" {
   type        = "string"
 }
 
+variable "ssh_port" {
+  description = "The SSH port, as defined in the original AMI from packer"
+  default     = "222"
+  type        = "string"
+}
+
 variable "name" {
   description = "The main name that will be used for the OpenVPN instance."
   default     = "openvpn"
