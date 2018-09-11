@@ -86,6 +86,7 @@ module "my_openvpn" {
 - `ip` - **[type: list]** List of private IP address of the OpenVPN instance.
 - `security_group` - **[type: string]** ID of the security group to be added to every instance that should allow access from the OpenVPN service.
 - `ssh_key` - **[type: string]** The name of the SSH key used.
+- `ssh_port` -  **[type: string]** The SSH access port.
 
 ## Service Access
 
@@ -93,11 +94,11 @@ This modules provides a security group that will allow access from the OpenVPN
 instance.
 
 That group will allow access to the following ports to all the AWS EC2
-instances that belong to the group:
+instances that belong to the group.  Note that by default, the original packer image uses port 222 for SSH access.
 
 | Service    | Port   | Protocol |
 |:-----------|:------:|:--------:|
-| SSH        | 22     |    TCP   |
+| SSH        | 222    |    TCP   |
 | OpenVPN    | 1194   |    UDP   |
 
 If access to other ports is required, you can create your own security group

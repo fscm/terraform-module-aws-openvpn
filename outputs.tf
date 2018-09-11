@@ -54,3 +54,8 @@ output "ssh_key" {
   sensitive = false
   value     = "${var.keyname}"
 }
+
+output "ssh_port" {
+  sensitive = false
+  value     = "${var.ssh_port}"
+}
