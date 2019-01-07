@@ -2,7 +2,7 @@
 #
 # Cloud-Config template for the OpenVPN instance.
 #
-# Copyright 2016-2018, Frederico Martins
+# Copyright 2016-2019, Frederico Martins
 #   Author: Frederico Martins <http://github.com/fscm>
 #
 # SPDX-License-Identifier: MIT

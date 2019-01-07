@@ -1,7 +1,7 @@
 #
 # Terraform module to create an OpenVPN service.
 #
-# Copyright 2016-2018, Frederico Martins
+# Copyright 2016-2019, Frederico Martins
 #   Author: Frederico Martins <http://github.com/fscm>
 #
 # SPDX-License-Identifier: MIT
