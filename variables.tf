@@ -1,7 +1,7 @@
 #
 # Variables for the OpenVPN terraform module.
 #
-# Copyright 2016-2019, Frederico Martins
+# Copyright 2016-2020, Frederico Martins
 #   Author: Frederico Martins <http://github.com/fscm>
 #
 # SPDX-License-Identifier: MIT
