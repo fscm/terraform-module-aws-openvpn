@@ -1,3 +1,19 @@
+#
+# Terraform module to create an OpenVPN service.
+#
+# Copyright 2016-2020, Frederico Martins
+#   Author: Frederico Martins <http://github.com/fscm>
+#
+# SPDX-License-Identifier: MIT
+#
+# This program is free software. You can use it and/or modify it under the
+# terms of the MIT License.
+#
+
+#
+# OpenVPN instance.
+#
+
 variable "ami_id" {
   description = "The id of the AMI to use for the instance."
   type        = string
