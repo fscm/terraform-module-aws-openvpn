@@ -1,5 +1,5 @@
 #
-# Outputs for the OpenVPN terraform module.
+# Terraform module to create an OpenVPN service.
 #
 # Copyright 2016-2020, Frederico Martins
 #   Author: Frederico Martins <http://github.com/fscm>
@@ -10,52 +10,57 @@
 # terms of the MIT License.
 #
 
+#
+# OpenVPN instance.
+#
+
 output "allowed_cidrs" {
   sensitive = false
-  value     = "${var.vpn_allowed_cidrs}"
+  value     = var.vpn_allowed_cidrs
 }
 
 output "cidr" {
   sensitive = false
-  value     = "${var.vpn_cidr}"
+  value     = var.vpn_cidr
 }
 
 output "dns" {
   sensitive = false
-  value     = "${var.vpn_dns}"
+  value     = var.vpn_dns
 }
 
 output "fqdn" {
   sensitive = false
-  value     = ["${aws_route53_record.private.*.fqdn}"]
+  value     = [aws_route53_record.private.*.fqdn]
 }
 
 output "hostname" {
   sensitive = false
-  value     = ["${aws_instance.openvpn.*.private_dns}"]
+  value     = [aws_instance.openvpn.*.private_dns]
 }
 
 output "id" {
   sensitive = false
-  value     = ["${aws_instance.openvpn.*.id}"]
+  value     = [aws_instance.openvpn.*.id]
 }
 
 output "ip" {
   sensitive = false
-  value     = ["${aws_instance.openvpn.*.private_ip}"]
+  value     = [aws_instance.openvpn.*.private_ip]
 }
 
 output "security_group" {
   sensitive = false
-  value     = "${aws_security_group.openvpn.id}"
+  value     = aws_security_group.openvpn.id
 }
 
 output "ssh_key" {
   sensitive = false
-  value     = "${var.keyname}"
+  value     = var.keyname
 }
 
 output "ssh_port" {
   sensitive = false
-  value     = "${var.ssh_port}"
+  value     = var.ssh_port
 }
+
