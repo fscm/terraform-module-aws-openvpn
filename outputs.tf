@@ -1,5 +1,5 @@
 #
-# Terraform module to create an OpenVPN service.
+# Outputs for the OpenVPN terraform module.
 #
 # Copyright 2016-2020, Frederico Martins
 #   Author: Frederico Martins <http://github.com/fscm>
@@ -8,10 +8,6 @@
 #
 # This program is free software. You can use it and/or modify it under the
 # terms of the MIT License.
-#
-
-#
-# OpenVPN instance.
 #
 
 output "allowed_cidrs" {
@@ -63,4 +59,3 @@ output "ssh_port" {
   sensitive = false
   value     = var.ssh_port
 }
-

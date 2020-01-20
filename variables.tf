@@ -1,5 +1,5 @@
 #
-# Terraform module to create an OpenVPN service.
+# Variables for the OpenVPN terraform module.
 #
 # Copyright 2016-2020, Frederico Martins
 #   Author: Frederico Martins <http://github.com/fscm>
@@ -8,10 +8,6 @@
 #
 # This program is free software. You can use it and/or modify it under the
 # terms of the MIT License.
-#
-
-#
-# OpenVPN instance.
 #
 
 variable "ami_id" {
@@ -27,6 +23,12 @@ variable "associate_public_ip_address" {
 
 variable "domain" {
   description = "The domain name to use for the OpenVPN instance."
+  type        = string
+}
+
+variable "environment" {
+  description = "The environment name for the OpenVPN resource(s)."
+  default     = ""
   type        = string
 }
 
@@ -47,20 +49,14 @@ variable "keyname" {
   type        = string
 }
 
-variable "ssh_port" {
-  description = "The SSH port, as defined in the original AMI from packer"
-  default     = "222"
-  type        = string
-}
-
 variable "name" {
-  description = "The main name that will be used for the OpenVPN instance."
+  description = "The main name for the OpenVPN resource(s)."
   default     = "openvpn"
   type        = string
 }
 
-variable "prefix" {
-  description = "A prefix to prepend to the OpenVPN instance name."
+variable "namespace" {
+  description = "The namespace for the OpenVPN resource(s)."
   default     = ""
   type        = string
 }
@@ -95,9 +91,27 @@ variable "root_volume_type" {
   type        = string
 }
 
+variable "stage" {
+  description = "The stage attribute for the OpenVPN resource(s)."
+  default     = ""
+  type        = string
+}
+
+variable "ssh_port" {
+  description = "The SSH port, as defined in the original AMI from packer."
+  default     = "222"
+  type        = string
+}
+
 variable "subnet_ids" {
   description = "List of Subnet IDs to launch the instance in (e.g.: ['subnet-0zfg04s2','subnet-6jm2z54q'])."
   type        = list(string)
+}
+
+variable "tags" {
+  description = "Map of tags (e.g.: '{name=test,environment=dev}')."
+  default     = {}
+  type        = map(string)
 }
 
 variable "ttl" {
@@ -126,10 +140,4 @@ variable "vpn_dns" {
   description = "List of DNS Server addresses."
   default     = []
   type        = list(string)
-}
-
-variable "tags" {
-  description = "A mapping of tags to assign to some resources in the module."
-  default     = {}
-  type        = map(string)
 }

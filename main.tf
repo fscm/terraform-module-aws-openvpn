@@ -11,6 +11,18 @@
 #
 
 #
+# Tags.
+#
+module "tags" {
+  source      = "https://github.com/fscm/terraform-module-aws-tags"
+  environment = var.environment
+  name        = var.name
+  namespace   = var.namespace
+  stage       = var.stage
+  tags        = var.tags
+}
+
+#
 # OpenVPN instance.
 #
 
@@ -23,22 +35,22 @@ resource "aws_instance" "openvpn" {
   subnet_id                   = element(var.subnet_ids, 0)
   user_data                   = element(data.template_file.openvpn.*.rendered, 0)
   vpc_security_group_ids      = [aws_security_group.openvpn.id, aws_security_group.openvpn_public.id, var.extra_security_group_id]
-
   root_block_device {
     volume_size = var.root_volume_size
     volume_type = var.root_volume_type
     iops        = var.root_volume_iops
   }
-
-  tags = var.tags
+  tags = merge(
+    module.tags.tags,
+    {"Name"=format("%s", module.tags.id),"OpenVPN"="true","Service"="OpenVPN"}
+  )
 }
 
 data "template_file" "openvpn" {
   template = file("${path.module}/templates/cloud-config/init.tpl")
-
   vars = {
     domain       = var.domain
-    hostname     = "${var.prefix}${var.name}${format("%02d", 1)}"
+    hostname     = format("%s-%02d", module.tags.id, count.index + 1)
     openvpn_args = "-s ${var.vpn_cidr} ${length(var.vpn_dns) > 0 ? "-d -n join(',', var.vpn_dns)" : ""} ${join(" ", data.template_file.openvpn_rule.*.rendered)}"
   }
 }
@@ -58,7 +70,7 @@ data "template_file" "openvpn_rule" {
 
 resource "aws_route53_record" "private" {
   count   = var.private_zone_id != "" ? 1 : 0
-  name    = "${var.prefix}${var.name}${format("%02d", count.index + 1)}"
+  name    = format("%s-%02d", module.tags.id, count.index + 1)
   records = [element(aws_instance.openvpn.*.private_ip, count.index)]
   ttl     = var.ttl
   type    = "A"
@@ -67,7 +79,7 @@ resource "aws_route53_record" "private" {
 
 resource "aws_route53_record" "public" {
   count   = var.public_zone_id != "" && var.associate_public_ip_address ? 1 : 0
-  name    = "${var.prefix}${var.name}${format("%02d", count.index + 1)}"
+  name    = format("%s-%02d", module.tags.id, count.index + 1)
   records = [element(aws_instance.openvpn.*.public_ip, count.index)]
   ttl     = var.ttl
   type    = "A"
@@ -79,45 +91,43 @@ resource "aws_route53_record" "public" {
 #
 
 resource "aws_security_group" "openvpn" {
-  name   = "${var.prefix}${var.name}"
+  name   = format("%s", module.tags.id)
   vpc_id = var.vpc_id
-
   ingress {
     from_port = var.ssh_port
     to_port   = var.ssh_port
     protocol  = "tcp"
     self      = true
   }
-  
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
   lifecycle {
     create_before_destroy = true
   }
-
-  tags = var.tags
+  tags = merge(
+    module.tags.tags,
+    {"Name"=format("%s", module.tags.id)}
+  )
 }
 
 resource "aws_security_group" "openvpn_public" {
-  name   = "${var.prefix}${var.name}-public"
+  name   = format("%s-public", module.tags.id)
   vpc_id = var.vpc_id
-  
   ingress {
     from_port   = 1194
     to_port     = 1194
     protocol    = "udp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  
   lifecycle {
     create_before_destroy = true
   }
-
-  tags = var.tags
+  tags = merge(
+    module.tags.tags,
+    {"Name"=format("%s", module.tags.id)}
+  )
 }
-
